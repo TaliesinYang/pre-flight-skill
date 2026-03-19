@@ -1,95 +1,179 @@
+<div align="center">
+
 # pre-flight
+
+**Stop building what already exists. Start every feature with a capability check.**
+
+A [Claude Code](https://code.claude.com) skill that assesses your readiness before starting new work.
+Complements [Superpowers](https://github.com/obra/superpowers) — runs **before** brainstorming to ensure the right tools are in place.
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-A Claude Code skill that assesses your readiness before starting new features.
-Complements [Superpowers](https://github.com/obra/superpowers) — runs **before** brainstorming to ensure the right tools are in place.
+</div>
 
-## What it does
+---
 
-When you're about to start a new feature or non-trivial task, `pre-flight` answers three questions:
+## The Problem
 
-1. **Do I already have the skills/tools for this?** — Scans your installed skills, plugins, and MCP servers
-2. **Has the community built something I can use?** — Searches skill marketplaces and GitHub
-3. **Is it safe to use?** — Evaluates every community resource with security-first criteria (stars, maintenance, author reputation)
+You're about to build a feature. You fire up Claude Code, start brainstorming, write a plan, implement it...
 
-## The gap it fills
+Then discover someone already built a skill for exactly this. Or worse — you install a community plugin that quietly exfiltrates your `.env`.
 
+**pre-flight** fixes both problems in one step.
+
+## How It Works
+
+```mermaid
+flowchart LR
+    A["New Feature Idea"] --> B["pre-flight"]
+    B --> C{"Ready?"}
+    C -->|"✅ Yes"| D["superpowers:brainstorming"]
+    C -->|"📦 Install first"| E["Install community skill"]
+    C -->|"❌ Build it"| F["skill-creator"]
+    E --> D
+    F --> D
+    D --> G["plan → implement → ship"]
+
+    style A fill:#1a1a2e,stroke:#e94560,color:#fff
+    style B fill:#0f3460,stroke:#e94560,color:#fff,stroke-width:3px
+    style C fill:#16213e,stroke:#e94560,color:#fff
+    style D fill:#533483,stroke:#e94560,color:#fff
+    style G fill:#0f3460,stroke:#e94560,color:#fff
 ```
-         ❌ Gap (before)              ✅ Superpowers (already great)
-┌────────────────────────┐    ┌─────────────────────────────────────┐
-│ Can I do this?         │ →  │ brainstorming → plan → implement →  │
-│ What already exists?   │    │ TDD → code review → branch finish   │
-│ Is it safe to install? │    └─────────────────────────────────────┘
-└────────────────────────┘
+
+Three questions, answered automatically:
+
+| Question | How |
+|----------|-----|
+| **Do I have the tools?** | Scans installed skills, plugins, MCP servers |
+| **Has someone built this?** | Searches community marketplaces & GitHub |
+| **Is it safe?** | Security-first evaluation with 4-tier trust system |
+
+## Security-First Trust System
+
+Every community resource goes through evaluation before recommendation:
+
+```mermaid
+flowchart TD
+    R["Community Resource Found"] --> S{"Hard Reject?"}
+    S -->|"Obfuscated code\nCredential harvesting\nBroad permissions\nPrompt injection"| REJECT["🚫 Rejected"]
+    S -->|"Clean"| T{"Trust Scoring"}
+
+    T -->|"Official Anthropic\n1k+ ⭐ + known org"| T1["🟢 T1 Trusted"]
+    T -->|"100+ ⭐\nIdentifiable author"| T2["🟡 T2 Verified"]
+    T -->|"< 100 ⭐\nReadable code"| T3["🟠 T3 Community"]
+    T -->|"Anonymous\nNo stars"| T4["🔴 T4 Unverified"]
+
+    T1 --> REC["✅ Recommend"]
+    T2 --> REC
+    T3 --> REV["⚠️ Review first"]
+    T4 --> WARN["❌ Warn only"]
+
+    style REJECT fill:#dc3545,stroke:#dc3545,color:#fff
+    style T1 fill:#28a745,stroke:#28a745,color:#fff
+    style T2 fill:#ffc107,stroke:#ffc107,color:#000
+    style T3 fill:#fd7e14,stroke:#fd7e14,color:#fff
+    style T4 fill:#dc3545,stroke:#dc3545,color:#fff
 ```
+
+Full rubric: [evaluation-criteria.md](references/evaluation-criteria.md)
 
 ## Install
 
 ```bash
-# Personal skill (all projects)
+# Personal (available in all projects)
 git clone https://github.com/TaliesinYang/pre-flight-skill ~/.claude/skills/pre-flight
 
-# Or project-scoped
+# Project-scoped
 git clone https://github.com/TaliesinYang/pre-flight-skill .claude/skills/pre-flight
 ```
 
 ## Usage
 
 ```bash
-/pre-flight implement OAuth2 authentication
+/pre-flight implement OAuth2 with JWT refresh tokens
 /pre-flight add PDF export feature
 /pre-flight build a real-time notification system
 ```
 
-Or just describe what you want to build — Claude will auto-trigger it when relevant.
+Or just describe what you want to build — Claude auto-triggers it when relevant.
 
-## Output
+## Example Output
 
-A structured Pre-Flight Report:
+```markdown
+## Pre-Flight Report: real-time notification system
 
-- **Environment Readiness** — which skills/tools/code you already have
-- **Community Resources** — skills, plugins, repos found, each with a trust rating
-- **Recommended Path** — ready to go, install something first, or build from scratch
-- **Gaps & Risks** — what's missing and any security concerns
+### Environment Readiness
+| Area       | Status | Details                              |
+|------------|--------|--------------------------------------|
+| Skills     | ⚠️     | No WebSocket-specific skill found    |
+| MCP Tools  | ✅     | Playwright available for E2E testing |
+| Codebase   | ✅     | Express server exists, can extend    |
 
-Then hands off to `superpowers:brainstorming` (or whatever workflow you prefer).
+### Community Resources Found
+| Resource                  | Type   | Trust | Stars | Notes                    |
+|---------------------------|--------|-------|-------|--------------------------|
+| superpowers               | Plugin | 🟢    | 40k+  | Dev workflow (installed)  |
+| levnikolaevich/ws-skill   | Skill  | 🟡    | 340   | WebSocket patterns        |
+| socketio/socket.io        | Repo   | 🟢    | 60k+  | Reference implementation  |
 
-## Security-First Evaluation
+### Recommended Path
+📦 Install `ws-skill`, then proceed to `superpowers:brainstorming`
 
-Every community resource is rated on a 4-tier trust system:
+### Gaps & Risks
+- No push notification service integration found
+```
 
-| Tier | Label | Meaning |
-|------|-------|---------|
-| T1 | 🟢 Trusted | Official Anthropic or 1k+ stars + known org |
-| T2 | 🟡 Verified | 100+ stars + identifiable author |
-| T3 | 🟠 Community | <100 stars but readable, clean code |
-| T4 | 🔴 Unverified | Anonymous, no stars, or security concern |
+## Where It Fits
 
-Hard reject signals: obfuscated code, credential harvesting, overly broad permissions, prompt injection patterns.
+```mermaid
+flowchart LR
+    subgraph before["pre-flight (new)"]
+        direction TB
+        P1["Inventory skills & tools"]
+        P2["Search community"]
+        P3["Evaluate security"]
+        P1 --> P2 --> P3
+    end
 
-See [references/evaluation-criteria.md](references/evaluation-criteria.md) for the full rubric.
+    subgraph superpowers["Superpowers (existing)"]
+        direction TB
+        S1["Brainstorm"] --> S2["Plan"]
+        S2 --> S3["Implement"]
+        S3 --> S4["Test & Review"]
+        S4 --> S5["Ship"]
+    end
 
-## Enhanced search (optional)
+    before -->|"handoff"| superpowers
 
-Works offline with a bundled skill registry. For richer results, install any web search MCP:
+    style before fill:#0f3460,stroke:#e94560,color:#fff,stroke-width:2px
+    style superpowers fill:#533483,stroke:#e94560,color:#fff
+```
 
-- Perplexity MCP
+**pre-flight** owns the "before" — Superpowers owns the "during". No overlap, full coverage.
+
+## Design Principles
+
+| Principle | What it means |
+|-----------|--------------|
+| **Complementary** | Never replaces Superpowers or any other skill |
+| **Tool-agnostic** | Uses whatever search tools you have; works offline with bundled index |
+| **Read-only** | Never installs or executes community code — decisions are yours |
+| **Security-first** | When in doubt, flags it 🔴 |
+
+## Enhanced Search (Optional)
+
+Works offline with a [bundled skill registry](references/skill-registry.md). For richer results, add any web search MCP:
+
+- Perplexity MCP (recommended)
 - WebSearch (built-in with Claude Max)
 - Any MCP providing web search
-
-## Design principles
-
-- **Complementary** — never replaces Superpowers or any other skill
-- **Tool-agnostic** — uses whatever search tools you have, works offline too
-- **Read-only** — never installs or executes community code; decisions are yours
-- **Security-first** — when in doubt, flags it 🔴
 
 ## Structure
 
 ```
 pre-flight/
-├── SKILL.md                          # Core instructions (~120 lines)
+├── SKILL.md                          # Core skill instructions
 └── references/
     ├── evaluation-criteria.md        # Security evaluation rubric
     └── skill-registry.md             # Offline fallback index
@@ -98,3 +182,11 @@ pre-flight/
 ## License
 
 MIT
+
+---
+
+<div align="center">
+
+Built with Claude Code. Designed to complement, not compete.
+
+</div>
