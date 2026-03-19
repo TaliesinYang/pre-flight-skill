@@ -28,10 +28,10 @@
 
 ```bash
 # 个人技能（所有项目可用）
-git clone https://github.com/chzhcn/pre-flight-skill ~/.claude/skills/pre-flight
+git clone https://github.com/TaliesinYang/pre-flight-skill ~/.claude/skills/pre-flight
 
 # 或项目级别
-git clone https://github.com/chzhcn/pre-flight-skill .claude/skills/pre-flight
+git clone https://github.com/TaliesinYang/pre-flight-skill .claude/skills/pre-flight
 ```
 
 ## 使用

@@ -28,10 +28,10 @@ When you're about to start a new feature or non-trivial task, `pre-flight` answe
 
 ```bash
 # Personal skill (all projects)
-git clone https://github.com/chzhcn/pre-flight-skill ~/.claude/skills/pre-flight
+git clone https://github.com/TaliesinYang/pre-flight-skill ~/.claude/skills/pre-flight
 
 # Or project-scoped
-git clone https://github.com/chzhcn/pre-flight-skill .claude/skills/pre-flight
+git clone https://github.com/TaliesinYang/pre-flight-skill .claude/skills/pre-flight
 ```
 
 ## Usage
