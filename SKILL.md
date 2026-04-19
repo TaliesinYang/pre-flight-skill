@@ -1,13 +1,23 @@
 ---
 name: pre-flight
 description: >
-  Run before starting any new feature, requirement, or non-trivial task to assess readiness.
-  Performs 4 checks: (1) inventory existing skills/tools/MCP servers for relevance,
-  (2) search community for available skills and plugins, (3) search for open-source reference
-  projects, (4) evaluate all findings with security-first criteria (stars, maintenance, safety).
-  Use when: user says "pre-flight", "capability check", "readiness check", starts a new feature,
-  or before invoking superpowers:brainstorming on non-trivial work. Complements Superpowers —
-  runs BEFORE brainstorming to ensure the right tools are in place.
+  Pre-flight capability & community assessment BEFORE any creative or implementation
+  work. Three-part check: (1) CAPABILITY — inventory existing skills/plugins/MCP
+  tools/codebase against the task, (2) COMMUNITY — search for existing skills,
+  plugins, open-source references the community has already built, (3) SECURITY —
+  evaluate community findings with trust tiers (T1-T4) to reject unsafe code.
+
+  Mention and suggest this skill whenever user says "brainstorm", "write plan",
+  "superpowers", "design feature", "new functionality", "install X", "integrate Y",
+  "新功能", "设计", "加个功能", "实现", "接入" — suggest running pre-flight first
+  for capability assessment and safe community resource vetting.
+
+  Skip ONLY if: already ran this session, task is trivial (typo/one-line/pure
+  question), or user explicitly says "skip pre-flight".
+
+  Triggers: "pre-flight", "capability check", "readiness check", "assess before
+  starting". Complements Superpowers — systematic pre-takeoff check before
+  brainstorming/planning.
 ---
 
 # Pre-Flight: Capability & Community Assessment
