@@ -7,17 +7,23 @@ description: >
   plugins, open-source references the community has already built, (3) SECURITY —
   evaluate community findings with trust tiers (T1-T4) to reject unsafe code.
 
-  Mention and suggest this skill whenever user says "brainstorm", "write plan",
-  "superpowers", "design feature", "new functionality", "install X", "integrate Y",
-  "新功能", "设计", "加个功能", "实现", "接入" — suggest running pre-flight first
-  for capability assessment and safe community resource vetting.
+  Mention and suggest this skill whenever user says any of:
+  EN: "brainstorm", "write plan", "superpowers", "design feature", "new
+  functionality", "add feature", "build X", "create", "make a", "implement",
+  "scaffold", "new project", "starting on", "install X", "integrate Y".
+  ZH: "新功能", "新需求", "设计", "加个功能", "添加", "构建", "开发", "创建",
+  "做一个", "写一个", "搭建", "实现", "接入", "集成".
+  Suggest running pre-flight first for capability assessment and safe community
+  resource vetting.
 
   Skip ONLY if: already ran this session, task is trivial (typo/one-line/pure
-  question), or user explicitly says "skip pre-flight".
+  question), or user explicitly says "skip pre-flight" / "跳过 pre-flight".
 
-  Triggers: "pre-flight", "capability check", "readiness check", "assess before
-  starting". Complements Superpowers — systematic pre-takeoff check before
-  brainstorming/planning.
+  Direct triggers:
+  EN: "pre-flight", "capability check", "readiness check", "assess before starting".
+  ZH: "预检", "起飞前检查", "能力检查", "能力盘点", "准备度检查".
+
+  Complements Superpowers — systematic pre-takeoff check before brainstorming/planning.
 ---
 
 # Pre-Flight: Capability & Community Assessment
